@@ -1,0 +1,15 @@
+{
+    "name": "secgin/paytr-api-library",
+    "autoload": {
+        "psr-4": {
+            "YG\\PayTR\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Seçgin",
+            "email": "secginsanli@gmail.com"
+        }
+    ],
+    "require": {}
+}
