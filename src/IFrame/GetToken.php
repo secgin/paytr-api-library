@@ -2,6 +2,8 @@
 
 namespace YG\PayTR\IFrame;
 
+use YG\PayTR\Abstracts\IFrame\Basket;
+
 class GetToken implements \YG\PayTR\Abstracts\IFrame\GetToken
 {
     private string $merchantOid;
@@ -12,7 +14,7 @@ class GetToken implements \YG\PayTR\Abstracts\IFrame\GetToken
 
     private string $currency = 'TRY';
 
-    private string $userBasket;
+    private array $userBasket;
 
     private bool $noInstallment = false;
 
@@ -32,7 +34,7 @@ class GetToken implements \YG\PayTR\Abstracts\IFrame\GetToken
 
     private function __construct(string $merchantOid,
                                 float $paymentAmount,
-                                string $userBasket,
+                                array $userBasket,
                                 bool $noInstallment,
                                 int $maxInstallment,
                                 string $userIp,
@@ -57,9 +59,25 @@ class GetToken implements \YG\PayTR\Abstracts\IFrame\GetToken
         $this->merchantFailUrl = $merchantFailUrl;
     }
 
+    /**
+     * @param string $merchantOid
+     * @param float  $paymentAmount
+     * @param Basket[]  $userBasket
+     * @param bool   $noInstallment
+     * @param int    $maxInstallment
+     * @param string $userIp
+     * @param string $email
+     * @param string $userName
+     * @param string $userAddress
+     * @param string $userPhone
+     * @param string $merchantOkUrl
+     * @param string $merchantFailUrl
+     *
+     * @return GetToken
+     */
     public static function create(string $merchantOid,
                            float $paymentAmount,
-                           string $userBasket,
+                           array $userBasket,
                            bool $noInstallment,
                            int $maxInstallment,
                            string $userIp,
@@ -101,7 +119,10 @@ class GetToken implements \YG\PayTR\Abstracts\IFrame\GetToken
         return $this->currency;
     }
 
-    public function getUserBasket(): string
+    /**
+     * @return array|Basket[]
+     */
+    public function getUserBasket(): array
     {
         return $this->userBasket;
     }

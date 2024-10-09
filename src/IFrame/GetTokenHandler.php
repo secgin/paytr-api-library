@@ -22,7 +22,7 @@ class GetTokenHandler extends AbstractHandler
             $request->getMerchantOid() .
             $request->getEmail() .
             $paymentAmount .
-            $request->getUserBasket() .
+            $this->getUserBasket($request->getUserBasket()) .
             $noInstallment .
             $request->getMaxInstallment() .
             $request->getCurrency() .
@@ -37,7 +37,7 @@ class GetTokenHandler extends AbstractHandler
             'email' => $request->getEmail(),
             'payment_amount' => $paymentAmount,
             'paytr_token' => $payTrToken,
-            'user_basket' => $request->getUserBasket(),
+            'user_basket' => $this->getUserBasket($request->getUserBasket()),
             'debug_on' => $debugOn,
             'no_installment' => $noInstallment,
             'max_installment' => $request->getMaxInstallment(),
@@ -54,5 +54,19 @@ class GetTokenHandler extends AbstractHandler
         $result = $this->httpClient->post($this->config->get('tokenServiceUrl'), $postValues);
 
         return GetTokenResult::create($result);
+    }
+
+    /**
+     * @param \YG\PayTR\Abstracts\IFrame\Basket[] $basketItems
+     *
+     * @return string
+     */
+    private function getUserBasket(array $basketItems): string
+    {
+        $items = [];
+        foreach($basketItems as $basketItem)
+            $items[] = [$basketItem->getName(), $basketItem->getPrice(), $basketItem->getQuantity()];
+
+        return base64_encode(json_encode($items));
     }
 }

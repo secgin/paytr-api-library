@@ -10,7 +10,10 @@ interface GetToken
 
     public function getCurrency(): string;
 
-    public function getUserBasket(): string;
+    /**
+     * @return Basket[]
+     */
+    public function getUserBasket(): array;
 
     public function getNoInstallment(): bool;
 
